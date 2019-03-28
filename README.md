@@ -7,6 +7,8 @@ like videos from markdown.
 
 `npm install --save gatsby-remark-videos`
 
+This package is dependent on gatsby-plugin-ffmpeg which has the requirement of ffmpeg installed. Please follow the instructions at https://github.com/Mike-Dax/gatsby-plugin-ffmpeg to install the required dependencies.
+
 ## Usage
 
 The order of the pipelines will influence the final order in the `<video />`
