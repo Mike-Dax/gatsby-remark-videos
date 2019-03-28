@@ -4,7 +4,7 @@
   "version": "0.2.2",
   "author": "Michael Orenstein <mike@whiteshadows.me>",
   "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+    "url": "https://github.com/Mike-Dax/gatsby-remark-videos/issues"
   },
   "dependencies": {
     "@babel/runtime": "7.4.2",
@@ -21,7 +21,7 @@
     "@babel/core": "7.4.0",
     "cross-env": "^5.2.0"
   },
-  "homepage": "https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-remark-videos#readme",
+  "homepage": "https://github.com/Mike-Dax/gatsby-remark-videos",
   "keywords": [
     "gatsby",
     "gatsby-plugin",
@@ -35,7 +35,7 @@
   "peerDependencies": {
     "gatsby": ">2.0.0"
   },
-  "repository": "https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-remark-videos",
+  "repository": "https://github.com/Mike-Dax/gatsby-remark-videos",
   "scripts": {
     "build": "babel src --out-dir lib",
     "prepare": "cross-env NODE_ENV=production npm run build",

@@ -3,8 +3,6 @@
 The intent of this plugin is to aid in the embedding of looping 'html5 gifv'
 like videos from markdown.
 
-NOTE: This isn't actually published yet.
-
 ## Install
 
 `npm install --save gatsby-remark-videos`
