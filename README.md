@@ -41,7 +41,7 @@ plugins: [
             chain
               .videoCodec('libx264')
               .noAudio()
-              .videoBitrate('1000k')
+              .videoBitrate('1000k'),
           maxHeight: 480,
           maxWidth: 900,
           fileExtension: 'mp4',
