@@ -16,6 +16,8 @@ tag.
 
 ### Configuration
 
+Make sure this plugin comes before `gatsby-remark-images` otherwise it might complain about unknown image file formats.
+
 ```javascript
 // In your gatsby-config.js
 plugins: [

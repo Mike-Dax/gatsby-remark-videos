@@ -7,31 +7,30 @@
     "url": "https://github.com/Mike-Dax/gatsby-remark-videos/issues"
   },
   "dependencies": {
-    "@babel/runtime": "7.4.2",
-    "bluebird": "^3.5.3",
-    "cheerio": "^1.0.0-rc.2",
+    "@babel/runtime": "7.5.5",
+    "bluebird": "^3.5.5",
     "gatsby-plugin-ffmpeg": "^0.3.0",
-    "is-relative-url": "^2.0.0",
-    "lodash": "^4.17.11",
-    "slash": "^1.0.0",
-    "unist-util-select": "^1.5.0"
+    "is-relative-url": "^3.0.0",
+    "lodash": "^4.17.15",
+    "slash": "^3.0.0",
+    "unist-util-select": "^2.0.2"
   },
   "devDependencies": {
-    "@babel/cli": "7.2.3",
-    "@babel/core": "7.4.0",
+    "@babel/cli": "7.5.5",
+    "@babel/core": "7.5.5",
     "cross-env": "^5.2.0"
   },
   "homepage": "https://github.com/Mike-Dax/gatsby-remark-videos",
   "keywords": [
     "gatsby",
     "gatsby-plugin",
-    "image",
+    "video",
     "markdown",
     "remark",
-    "responsive images"
+    "ffmpeg"
   ],
   "license": "MIT",
-  "main": "lib/index.js",
+  "main": "./lib/index.js",
   "peerDependencies": {
     "gatsby": ">2.0.0"
   },

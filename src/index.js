@@ -4,7 +4,6 @@ const isRelativeUrl = require(`is-relative-url`)
 const _ = require(`lodash`)
 
 const Promise = require(`bluebird`)
-const cheerio = require(`cheerio`)
 const slash = require(`slash`)
 
 const { transcode } = require(`gatsby-plugin-ffmpeg`)
@@ -13,7 +12,7 @@ const allowedFiletypes = ['avi', 'mp4']
 
 module.exports = (
   { files, markdownNode, markdownAST, pathPrefix, getNode, reporter },
-  pluginOptions,
+  pluginOptions
 ) => {
   const defaults = {
     pipelines: [
@@ -42,9 +41,6 @@ module.exports = (
 
   // This will only work for markdown syntax image tags
   const markdownVideoNodes = select(markdownAST, `image`)
-
-  // This will also allow the use of html video tags
-  const rawHtmlNodes = select(markdownAST, `html`)
 
   // Takes a node and generates the needed videos and then returns
   // the needed HTML replacement for the video
@@ -81,12 +77,12 @@ module.exports = (
     const sourceTags = transcodeResult.videos.map(video => {
       return `<source src="${video.src}" type="video/${video.fileExtension}">`
     })
-
+    /*
     console.log(
       transcodeResult.presentationMaxWidth,
-      transcodeResult.presentationMaxHeight,
-    )
-
+      transcodeResult.presentationMaxHeight
+    );
+    */
     let wrapperAspectStyle
     let videoAspectStyle
 
@@ -144,7 +140,7 @@ module.exports = (
             // Video isn't relative so there's nothing for us to do.
             return resolve()
           }
-        }),
-    ),
+        })
+    )
   ).then(markdownVideoNodes => markdownVideoNodes.filter(node => !!node))
 }
