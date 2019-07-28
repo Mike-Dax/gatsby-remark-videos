@@ -5,7 +5,7 @@ like videos from markdown.
 
 ## Install
 
-`npm install --save gatsby-remark-videos`
+`npm install --save gatsby-remark-videos gatsby-plugin-ffmpeg`
 
 This package is dependent on gatsby-plugin-ffmpeg which has the requirement of ffmpeg installed. Please follow the instructions at https://github.com/Mike-Dax/gatsby-plugin-ffmpeg to install the required dependencies.
 
@@ -45,6 +45,9 @@ plugins: [
             chain
               .videoCodec('libx264')
               .noAudio()
+              .addOption('-profile:v', 'main')
+              .addOption('-pix_fmt', 'yuv420p')
+              .outputOptions(['-movflags faststart'])
               .videoBitrate('1000k'),
           maxHeight: 480,
           maxWidth: 900,
