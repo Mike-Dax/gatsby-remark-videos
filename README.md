@@ -55,6 +55,17 @@ plugins: [
 ]
 ```
 
+Also make sure you have a plugin that copies the files you are referencing, for example `gatsby-remark-copy-linked-files`.
+
+```
+...
+{
+  resolve: `gatsby-remark-copy-linked-files`,
+  options: {},
+},
+...
+```
+
 ### Markdown Syntax
 
 Markdown image syntax is used:
