@@ -14,6 +14,8 @@ This package is dependent on gatsby-plugin-ffmpeg which has the requirement of f
 The order of the pipelines will influence the final order in the `<video />`
 tag.
 
+Currently it only detects files with the extensions `avi`, `mp4`, `mov`, `mkv`. If you have a different container and would like it added, open an issue or create a PR and I'm happy to include it.
+
 ### Configuration
 
 Make sure this plugin comes before `gatsby-remark-images` otherwise it might complain about unknown image file formats.

@@ -8,7 +8,7 @@ const slash = require(`slash`)
 
 const { transcode } = require(`gatsby-plugin-ffmpeg`)
 
-const allowedFiletypes = ['avi', 'mp4']
+const allowedFiletypes = ['avi', 'mp4', 'mov', 'mkv']
 
 module.exports = (
   { files, markdownNode, markdownAST, pathPrefix, getNode, reporter },
