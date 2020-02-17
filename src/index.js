@@ -110,11 +110,14 @@ module.exports = (
     </video>
     `
 
+    const textTag = node.alt ? `<p class="gatsby-video-alt-text">${node.alt}</p>` : ''
+
     let rawHTML = `
       <div
       class="gatsby-video-aspect-ratio"
       style="${wrapperAspectStyle}"
-      >${videoTag}</div>
+      >${videoTag}
+      ${textTag}</div>
     `
 
     return rawHTML

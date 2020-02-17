@@ -77,7 +77,7 @@ Markdown image syntax is used:
 
 ```
 Video one:
-![](video.avi)
+![A very nice video](video.avi)
 ```
 
 Creates roughly this:
@@ -86,5 +86,6 @@ Creates roughly this:
 <video autoplay loop>
   <source src="/static/video-hash-optshash.webm" type="video/webm" />
   <source src="/static/video-hash-optshash.mp4" type="video/mp4" />
+  <p class="gatsby-video-alt-text">A very nice video</p>
 </video>
 ```
