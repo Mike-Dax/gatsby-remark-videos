@@ -75,7 +75,7 @@ module.exports = (
     // Calculate the paddingBottom %
 
     const sourceTags = transcodeResult.videos.map(video => {
-      return `<source src="${video.src}" type="video/${video.fileExtension}">`
+      return `<source src="${pathPrefix || ''}${video.src}" type="video/${video.fileExtension}">`
     })
     /*
     console.log(
