@@ -1,60 +1,77 @@
-const select = require(`unist-util-select`)
-const path = require(`path`)
-const isRelativeUrl = require(`is-relative-url`)
-const _ = require(`lodash`)
-
-const slash = require(`slash`)
-
-const { transcode } = require(`gatsby-plugin-ffmpeg`)
+const select = require('unist-util-select')
+import path from 'path'
+import isRelativeUrl from 'is-relative-url'
+import slash from 'slash'
+import { transcode } from 'gatsby-plugin-ffmpeg'
+import type { FfmpegCommand } from 'fluent-ffmpeg'
+import { Node } from 'unist'
+import { Node as GatsbyNode } from 'gatsby'
 
 const allowedFiletypes = ['avi', 'mp4', 'mov', 'mkv']
 
-module.exports = (
-  { files, markdownNode, markdownAST, pathPrefix, getNode, reporter },
-  pluginOptions
-) => {
-  const defaults = {
-    pipelines: [
-      {
-        name: 'vp9',
-        transcode: (chain) =>
-          chain
-            .videoCodec('libvpx-vp9')
-            .noAudio()
-            .outputOptions(['-crf 20', '-b:v 0']),
-        maxHeight: 480,
-        maxWidth: 900,
-        fileExtension: 'webm',
-      },
-      {
-        name: 'h264',
-        transcode: (chain) => chain.videoCodec('libx264').noAudio(),
-        maxHeight: 480,
-        maxWidth: 900,
-        fileExtension: 'mp4',
-      },
-    ],
-  }
+const defaults = {
+  pipelines: [
+    {
+      name: 'vp9',
+      transcode: (chain: FfmpegCommand) =>
+        chain
+          .videoCodec('libvpx-vp9')
+          .noAudio()
+          .outputOptions(['-crf 20', '-b:v 0']),
+      maxHeight: 480,
+      maxWidth: 900,
+      fileExtension: 'webm',
+    },
+    {
+      name: 'h264',
+      transcode: (chain: FfmpegCommand) =>
+        chain.videoCodec('libx264').noAudio(),
+      maxHeight: 480,
+      maxWidth: 900,
+      fileExtension: 'mp4',
+    },
+  ],
+}
 
-  const options = _.defaults(pluginOptions, defaults)
+interface PluginOptions {}
+
+export default async function transform(
+  {
+    files,
+    markdownNode,
+    markdownAST,
+    pathPrefix,
+    getNode,
+    reporter,
+  }: {
+    files: GatsbyNode[]
+    markdownNode: any
+    markdownAST: Node
+    pathPrefix: string
+    getNode: any
+    reporter: any
+  },
+  pluginOptions: PluginOptions
+) {
+  const options = Object.assign({}, defaults, pluginOptions)
 
   // This will only work for markdown syntax image tags
   const markdownVideoNodes = select(markdownAST, `image`)
 
   // Takes a node and generates the needed videos and then returns
   // the needed HTML replacement for the video
-  const generateVideosAndUpdateNode = async function (node, resolve) {
+  const generateVideosAndUpdateNode = async function (node: any) {
     // Check if this markdownNode has a File parent. This plugin
     // won't work if the video isn't hosted locally.
     const parentNode = getNode(markdownNode.parent)
-    let videoPath
+    let videoPath: string
     if (parentNode && parentNode.dir) {
       videoPath = slash(path.join(parentNode.dir, node.url))
     } else {
       return null
     }
 
-    const videoNode = _.find(files, (file) => {
+    const videoNode = files.find((file) => {
       if (file && file.absolutePath) {
         return file.absolutePath === videoPath
       }
@@ -62,26 +79,27 @@ module.exports = (
     })
 
     if (!videoNode || !videoNode.absolutePath) {
-      return resolve()
+      return null
     }
 
     let transcodeResult = await transcode({
-      file: videoNode,
+      file: videoNode as any,
       options,
       reporter,
     })
 
     // Calculate the paddingBottom %
-
     const sourceTags = transcodeResult.videos.map((video) => {
       return `<source src="${video.src}" type="video/${video.fileExtension}">`
     })
+
     /*
     console.log(
       transcodeResult.presentationMaxWidth,
       transcodeResult.presentationMaxHeight
     );
     */
+
     let wrapperAspectStyle
     let videoAspectStyle
 
@@ -113,27 +131,24 @@ module.exports = (
     return rawHTML
   }
 
-  return Promise.all(
-    // Simple because there is no nesting in markdown
-    markdownVideoNodes.map(
-      async (node) =>
-        new Promise(async (resolve, reject) => {
-          const fileType = node.url.split('.').pop()
+  await Promise.all(
+    markdownVideoNodes.map(async (node: any) => {
+      const fileType = node.url.split('.').pop()
 
-          if (isRelativeUrl(node.url) && allowedFiletypes.includes(fileType)) {
-            const rawHTML = await generateVideosAndUpdateNode(node, resolve)
+      if (isRelativeUrl(node.url) && allowedFiletypes.includes(fileType)) {
+        const rawHTML = await generateVideosAndUpdateNode(node)
 
-            if (rawHTML) {
-              // Replace the video node with an inline HTML node.
-              node.type = `html`
-              node.value = rawHTML
-            }
-            return resolve(node)
-          } else {
-            // Video isn't relative so there's nothing for us to do.
-            return resolve()
-          }
-        })
-    )
-  ).then((markdownVideoNodes) => markdownVideoNodes.filter((node) => !!node))
+        if (rawHTML) {
+          // Replace the video node with an inline HTML node.
+          node.type = `html`
+          node.value = rawHTML
+        }
+
+        return node
+      } else {
+        // Video isn't relative so there's nothing for us to do.
+        return null
+      }
+    })
+  )
 }
