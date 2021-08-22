@@ -3,7 +3,6 @@ const path = require(`path`)
 const isRelativeUrl = require(`is-relative-url`)
 const _ = require(`lodash`)
 
-const Promise = require(`bluebird`)
 const slash = require(`slash`)
 
 const { transcode } = require(`gatsby-plugin-ffmpeg`)
@@ -18,7 +17,7 @@ module.exports = (
     pipelines: [
       {
         name: 'vp9',
-        transcode: chain =>
+        transcode: (chain) =>
           chain
             .videoCodec('libvpx-vp9')
             .noAudio()
@@ -29,7 +28,7 @@ module.exports = (
       },
       {
         name: 'h264',
-        transcode: chain => chain.videoCodec('libx264').noAudio(),
+        transcode: (chain) => chain.videoCodec('libx264').noAudio(),
         maxHeight: 480,
         maxWidth: 900,
         fileExtension: 'mp4',
@@ -44,7 +43,7 @@ module.exports = (
 
   // Takes a node and generates the needed videos and then returns
   // the needed HTML replacement for the video
-  const generateVideosAndUpdateNode = async function(node, resolve) {
+  const generateVideosAndUpdateNode = async function (node, resolve) {
     // Check if this markdownNode has a File parent. This plugin
     // won't work if the video isn't hosted locally.
     const parentNode = getNode(markdownNode.parent)
@@ -55,7 +54,7 @@ module.exports = (
       return null
     }
 
-    const videoNode = _.find(files, file => {
+    const videoNode = _.find(files, (file) => {
       if (file && file.absolutePath) {
         return file.absolutePath === videoPath
       }
@@ -74,7 +73,7 @@ module.exports = (
 
     // Calculate the paddingBottom %
 
-    const sourceTags = transcodeResult.videos.map(video => {
+    const sourceTags = transcodeResult.videos.map((video) => {
       return `<source src="${video.src}" type="video/${video.fileExtension}">`
     })
     /*
@@ -87,14 +86,8 @@ module.exports = (
     let videoAspectStyle
 
     if (transcodeResult.aspectRatio < 1) {
-      wrapperAspectStyle = `max-width: ${
-        transcodeResult.presentationMaxWidth
-      }px; max-height: ${
-        transcodeResult.presentationMaxHeight
-      }px; margin-left: auto; margin-right: auto;`
-      videoAspectStyle = `height: 100%; width: 100%; margin: 0 auto; display: block; max-height: ${
-        transcodeResult.presentationMaxHeight
-      }px;`
+      wrapperAspectStyle = `max-width: ${transcodeResult.presentationMaxWidth}px; max-height: ${transcodeResult.presentationMaxHeight}px; margin-left: auto; margin-right: auto;`
+      videoAspectStyle = `height: 100%; width: 100%; margin: 0 auto; display: block; max-height: ${transcodeResult.presentationMaxHeight}px;`
     } else {
       // we're landscape, use the video aspect ratio to create a
 
@@ -105,7 +98,7 @@ module.exports = (
     }
 
     const videoTag = `
-    <video autoplay loop preload style="${videoAspectStyle}" >
+    <video preload autoplay muted loop playsinline style="${videoAspectStyle}">
       ${sourceTags.join('')}
     </video>
     `
@@ -123,7 +116,7 @@ module.exports = (
   return Promise.all(
     // Simple because there is no nesting in markdown
     markdownVideoNodes.map(
-      node =>
+      async (node) =>
         new Promise(async (resolve, reject) => {
           const fileType = node.url.split('.').pop()
 
@@ -142,5 +135,5 @@ module.exports = (
           }
         })
     )
-  ).then(markdownVideoNodes => markdownVideoNodes.filter(node => !!node))
+  ).then((markdownVideoNodes) => markdownVideoNodes.filter((node) => !!node))
 }
