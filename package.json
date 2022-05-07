@@ -1,5 +1,5 @@
 {
-  "name": "@burkov/gatsby-remark-videos",
+  "name": "gatsby-remark-videos",
   "description": "Processes videos in markdown so they can be used in the production build.",
   "version": "0.5.1-next.1",
   "author": "Michael Orenstein <mike@whiteshadows.me>",
