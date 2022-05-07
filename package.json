@@ -1,7 +1,7 @@
 {
   "name": "@burkov/gatsby-remark-videos",
   "description": "Processes videos in markdown so they can be used in the production build.",
-  "version": "0.5.0",
+  "version": "0.4.1-next.1",
   "author": "Michael Orenstein <mike@whiteshadows.me>",
   "bugs": {
     "url": "https://github.com/Mike-Dax/gatsby-remark-videos/issues"
