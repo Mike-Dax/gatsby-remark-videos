@@ -31,6 +31,13 @@ const defaults = {
       fileExtension: 'mp4',
     },
   ],
+  attributes: [
+    'preload',
+    'autoplay',
+    'muted',
+    'loop',
+    'playsinline'
+  ]
 }
 
 interface PluginOptions {}
@@ -115,8 +122,10 @@ export default async function transform(
       videoAspectStyle = `position: absolute; top: 0; left: 0; width: 100%; height: auto;`
     }
 
+    const videoAttributes = options.attributes.join(" ");
+
     const videoTag = `
-    <video preload autoplay muted loop playsinline style="${videoAspectStyle}">
+    <video ${videoAttributes} style="${videoAspectStyle}">
       ${sourceTags.join('')}
     </video>
     `
