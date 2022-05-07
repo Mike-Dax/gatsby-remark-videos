@@ -54,6 +54,14 @@ plugins: [
           fileExtension: 'mp4',
         },
       ],
+      attributes: [
+        'preload',
+        'autoplay',
+        'muted',
+        'loop',
+        'playsinline',
+        'controls'
+      ]
     }
   },
   ...
